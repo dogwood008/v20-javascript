@@ -1,0 +1,19 @@
+{
+  "name": "v20-javascript",
+  "version": "3.0.25-1",
+  "description": "Cloned and merged from official.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dogwood008/v20-javascript.git"
+  },
+  "author": "dogwood008",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dogwood008/v20-javascript/issues"
+  },
+  "homepage": "https://github.com/dogwood008/v20-javascript#readme"
+}
