@@ -8099,7 +8099,8 @@ class EntitySpec {
     stream(
         accountID,
         streamChunkHandler,
-        responseHandler
+        responseHandler,
+        errorHandler
     )
     {
         if (!responseHandler)
@@ -8170,8 +8171,26 @@ class EntitySpec {
 
         function generateStreamParser(streamChunkHandler)
         {
+            let chunkCache = '';
             return (chunk) => {
-                let msg = JSON.parse(chunk);
+                let msg;
+                let reminder = 0;
+                try {
+                    if (chunkCache.length){
+                        chunk = chunkCache + chunk;
+                    }
+                    if (chunk.indexOf('}{') > -1) {
+                       reminder = chunk.substring(chunk.indexOf('}{')+1, chunk.length);
+                       chunk = chunk.substring(0, chunk.indexOf('}{') + 1)
+                    }
+                    msg = JSON.parse(chunk);
+                    chunkCache = '';
+                    if (reminder) {
+                        chunkCache += reminder;
+                    }
+                } catch (e) {
+                    chunkCache = chunk;
+                }
 
                 if (msg.type == "HEARTBEAT")
                 {
@@ -8189,7 +8208,8 @@ class EntitySpec {
             path,
             body,
             generateStreamParser(streamChunkHandler),
-            handleResponse
+            handleResponse,
+            errorHandler
         );
     }
 
